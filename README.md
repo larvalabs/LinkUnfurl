@@ -1,5 +1,4 @@
-Link Unfurling for Java
-=======
+## Link Unfurling for Java
 
 This library produces information that can be used to "unfurl" links in a way similar to Slack. This is described in detail here: https://medium.com/slack-developer-blog/everything-you-ever-wanted-to-know-about-unfurling-but-were-afraid-to-ask-or-how-to-make-your-e64b4bb9254#.6ptw5x2zx
 
