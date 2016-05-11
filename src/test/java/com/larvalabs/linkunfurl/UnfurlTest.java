@@ -11,10 +11,12 @@ public class UnfurlTest {
     @Test
     public void testImgurUrls() throws Exception {
         // Imgur defines all Twitter card items, so these should be those
-        LinkInfo info = LinkUnfurl.unfurl("http://i.imgur.com/5AqbEBO.gifv", 30000);
+        String url = "http://i.imgur.com/5AqbEBO.gifv";
+        LinkInfo info = LinkUnfurl.unfurl(url, 30000);
+        assertEquals(url, info.getUrl());
         assertEquals("Wait for it...", info.getTitle());
         assertEquals("Imgur: The most awesome images on the Internet.", info.getDescription());
-        assertEquals("https://i.imgur.com/5AqbEBOh.jpg", info.getHeroImageUrl());
+        assertEquals("https://i.imgur.com/5AqbEBOh.jpg", info.getImageUrl());
         assertEquals("https://i.imgur.com/5AqbEBO.mp4", info.getVideoUrl());
         assertEquals(718, info.getVideoWidth());
         assertEquals(404, info.getVideoHeight());
@@ -25,7 +27,9 @@ public class UnfurlTest {
         LinkInfo info = LinkUnfurl.unfurl("https://imgur.com/kWyErjx", 30000);
         assertEquals("Imgur: The most awesome images on the Internet", info.getTitle());
         assertEquals("Imgur: The most awesome images on the Internet.", info.getDescription());
-        assertEquals("https://i.imgur.com/kWyErjx.png", info.getHeroImageUrl());
+        assertEquals("https://i.imgur.com/kWyErjx.png", info.getImageUrl());
+        assertEquals(600, info.getImageWidth());
+        assertEquals(315, info.getImageHeight());
     }
 
     @Test
@@ -35,7 +39,7 @@ public class UnfurlTest {
         assertEquals("Harvard University", info.getTitle());
         assertEquals("Harvard University is devoted to excellence in teaching, learning, and research, and to developing leaders in many disciplines who make a difference globally. Harvard University is made up of 11 principal academic units.",
                 info.getDescription());
-        assertEquals("http://www.harvard.edu/sites/default/files/default_images/harvard-social1200.jpg", info.getHeroImageUrl());
+        assertEquals("http://www.harvard.edu/sites/default/files/default_images/harvard-social1200.jpg", info.getImageUrl());
         assertNull(info.getVideoUrl());
         assertEquals(-1, info.getVideoWidth());
         assertEquals(-1, info.getVideoHeight());
@@ -48,7 +52,7 @@ public class UnfurlTest {
         assertEquals("Slashdot: News for nerds, stuff that matters", info.getTitle());
         assertEquals("Slashdot: News for nerds, stuff that matters. Timely news source for technology related news with a heavy slant towards Linux and Open Source issues.",
                 info.getDescription());
-        assertNull(info.getHeroImageUrl());
+        assertNull(info.getImageUrl());
         assertNull(info.getVideoUrl());
         assertEquals(-1, info.getVideoWidth());
         assertEquals(-1, info.getVideoHeight());
@@ -60,13 +64,13 @@ public class UnfurlTest {
             LinkInfo info = LinkUnfurl.unfurl("http://i.imgur.com/aePzKGR.png", 30000);
             assertNull(info.getTitle());
             assertNull(info.getDescription());
-            assertEquals("http://i.imgur.com/aePzKGR.png", info.getHeroImageUrl());
+            assertEquals("http://i.imgur.com/aePzKGR.png", info.getImageUrl());
         }
         {
             LinkInfo info = LinkUnfurl.unfurl("http://i.imgur.com/KlV4Atb.jpg", 30000);
             assertNull(info.getTitle());
             assertNull(info.getDescription());
-            assertEquals("http://i.imgur.com/KlV4Atb.jpg", info.getHeroImageUrl());
+            assertEquals("http://i.imgur.com/KlV4Atb.jpg", info.getImageUrl());
         }
     }
 }

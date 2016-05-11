@@ -15,6 +15,8 @@ public class LinkUnfurl {
     public static final String METANAME_TWITTER_TITLE = "twitter:title";
     public static final String METANAME_TWITTER_DESCRIPTION = "twitter:description";
     public static final String METANAME_TWITTER_IMAGE = "twitter:image";
+    public static final String METANAME_TWITTER_IMAGE_WIDTH = "twitter:image:width";
+    public static final String METANAME_TWITTER_IMAGE_HEIGHT = "twitter:image:height";
     public static final String METANAME_TWITTER_VIDEO = "twitter:player:stream";
     public static final String METANAME_TWITTER_VIDEO_WIDTH = "twitter:player:width";
     public static final String METANAME_TWITTER_VIDEO_HEIGHT = "twitter:player:height";
@@ -22,6 +24,8 @@ public class LinkUnfurl {
     public static final String METANAME_FACEBOOK_TITLE = "og:title";
     public static final String METANAME_FACEBOOK_DESCRIPTION = "og:description";
     public static final String METANAME_FACEBOOK_IMAGE = "og:image";
+    public static final String METANAME_FACEBOOK_IMAGE_WIDTH = "og:image:width";
+    public static final String METANAME_FACEBOOK_IMAGE_HEIGHT = "og:image:height";
     public static final String METANAME_FACEBOOK_VIDEO = "og:video";
     public static final String METANAME_FACEBOOK_VIDEO_WIDTH = "og:video:width";
     public static final String METANAME_FACEBOOK_VIDEO_HEIGHT = "og:video:height";
@@ -54,13 +58,14 @@ public class LinkUnfurl {
         if (contentType != null && contentType.toLowerCase().contains("image")) {
             // Don't attempt to parse, this is an image file - set as hero image
             LinkInfo info = new LinkInfo();
-            info.setHeroImageUrl(url);
+            info.setImageUrl(url);
             return info;
         }
 
         Document document = response.parse();
 
         LinkInfo info = new LinkInfo();
+        info.setUrl(url);
 
         {
             String twitterTitle = getMetaElementIfExists(document, METANAME_TWITTER_TITLE);
@@ -79,7 +84,9 @@ public class LinkUnfurl {
         }
 
         info.setDescription(getContentFromMetaTag(document, METANAME_TWITTER_DESCRIPTION, METANAME_FACEBOOK_DESCRIPTION, METANAME_HTML_DESCRIPTION));
-        info.setHeroImageUrl(getContentFromMetaTag(document, METANAME_TWITTER_IMAGE, METANAME_FACEBOOK_IMAGE));
+        info.setImageUrl(getContentFromMetaTag(document, METANAME_TWITTER_IMAGE, METANAME_FACEBOOK_IMAGE));
+        info.setImageWidth(getContentFromMetaTag(document, METANAME_TWITTER_IMAGE_WIDTH, METANAME_FACEBOOK_IMAGE_WIDTH));
+        info.setImageHeight(getContentFromMetaTag(document, METANAME_TWITTER_IMAGE_HEIGHT, METANAME_FACEBOOK_IMAGE_HEIGHT));
         info.setVideoUrl(getContentFromMetaTag(document, METANAME_TWITTER_VIDEO, METANAME_FACEBOOK_VIDEO));
         info.setVideoWidth(getContentFromMetaTag(document, METANAME_TWITTER_VIDEO_WIDTH, METANAME_FACEBOOK_VIDEO_WIDTH));
         info.setVideoHeight(getContentFromMetaTag(document, METANAME_TWITTER_VIDEO_HEIGHT, METANAME_FACEBOOK_VIDEO_HEIGHT));
