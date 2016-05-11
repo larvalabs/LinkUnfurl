@@ -6,15 +6,18 @@ package com.larvalabs.linkunfurl;
 public class LinkInfo {
 
     private String url;
+    private String type;
+    private String site;
     private String title;
     private String description;
     private String imageUrl;
-    private int imageWidth = -1;
-    private int imageHeight = -1;
+    private Integer imageWidth;
+    private Integer imageHeight;
+    private Long imageSize;
     private String videoUrl;
     private String videoType;
-    private int videoWidth = -1;
-    private int videoHeight = -1;
+    private Integer videoWidth;
+    private Integer videoHeight;
 
     public String getUrl() {
         return url;
@@ -22,6 +25,22 @@ public class LinkInfo {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
     }
 
     public String getTitle() {
@@ -48,7 +67,7 @@ public class LinkInfo {
         this.imageUrl = imageUrl;
     }
 
-    public int getImageWidth() {
+    public Integer getImageWidth() {
         return imageWidth;
     }
 
@@ -62,7 +81,7 @@ public class LinkInfo {
         }
     }
 
-    public int getImageHeight() {
+    public Integer getImageHeight() {
         return imageHeight;
     }
 
@@ -73,6 +92,24 @@ public class LinkInfo {
     public void setImageHeight(String height) {
         if (height != null) {
             this.imageHeight = Integer.parseInt(height);
+        }
+    }
+
+    /**
+     * The size of the image in bytes given by imageUrl
+     * @return
+     */
+    public Long getImageSize() {
+        return imageSize;
+    }
+
+    public void setImageSize(Long imageSize) {
+        this.imageSize = imageSize;
+    }
+
+    public void setSize(String size) {
+        if (size != null) {
+            this.imageSize = Long.parseLong(size);
         }
     }
 
@@ -92,7 +129,7 @@ public class LinkInfo {
         this.videoType = videoType;
     }
 
-    public int getVideoWidth() {
+    public Integer getVideoWidth() {
         return videoWidth;
     }
 
@@ -106,7 +143,7 @@ public class LinkInfo {
         }
     }
 
-    public int getVideoHeight() {
+    public Integer getVideoHeight() {
         return videoHeight;
     }
 

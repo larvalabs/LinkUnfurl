@@ -6,12 +6,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by matt on 5/9/16.
  */
 public class LinkUnfurl {
 
+    public static final String METANAME_TWITTER_SITE = "twitter:domain";
     public static final String METANAME_TWITTER_TITLE = "twitter:title";
     public static final String METANAME_TWITTER_DESCRIPTION = "twitter:description";
     public static final String METANAME_TWITTER_IMAGE = "twitter:image";
@@ -21,6 +24,8 @@ public class LinkUnfurl {
     public static final String METANAME_TWITTER_VIDEO_WIDTH = "twitter:player:width";
     public static final String METANAME_TWITTER_VIDEO_HEIGHT = "twitter:player:height";
 
+    public static final String METANAME_FACEBOOK_SITE = "og:site_name";
+    public static final String METANAME_FACEBOOK_TYPE = "og:type";
     public static final String METANAME_FACEBOOK_TITLE = "og:title";
     public static final String METANAME_FACEBOOK_DESCRIPTION = "og:description";
     public static final String METANAME_FACEBOOK_IMAGE = "og:image";
@@ -34,6 +39,7 @@ public class LinkUnfurl {
     public static final String METANAME_HTML_DESCRIPTION = "description";
 
     public static final String ATTR_CONTENT = "content";
+    public static final String USER_AGENT = "JavaUnfurlBot/0.1";
 
     /**
      * Attempt to "unfurl" a URL by retrieving details about the URL. Based on how Slack handles URLs which
@@ -49,7 +55,7 @@ public class LinkUnfurl {
     public static LinkInfo unfurl(String url, int timeoutMillis) throws IOException {
         Connection.Response response = Jsoup.connect(url)
                 .ignoreContentType(true)
-                .userAgent("JavaUnfurlBot/0.1")
+                .userAgent(USER_AGENT)
                 .timeout(timeoutMillis)
                 .followRedirects(true)
                 .execute();
@@ -58,7 +64,9 @@ public class LinkUnfurl {
         if (contentType != null && contentType.toLowerCase().contains("image")) {
             // Don't attempt to parse, this is an image file - set as hero image
             LinkInfo info = new LinkInfo();
+            info.setType("image");
             info.setImageUrl(url);
+            setImageLength(info);
             return info;
         }
 
@@ -83,6 +91,17 @@ public class LinkUnfurl {
             }
         }
 
+        info.setType(getContentFromMetaTag(document, METANAME_FACEBOOK_TYPE));
+        if (info.getType() == null) {
+            info.setType("link");
+        }
+
+        info.setSite(getContentFromMetaTag(document, METANAME_FACEBOOK_SITE, METANAME_TWITTER_SITE));
+        if (info.getSite() == null) {
+            // fallback to parsing URL to get site name
+            info.setSite(new URL(url).getHost());
+        }
+
         info.setDescription(getContentFromMetaTag(document, METANAME_TWITTER_DESCRIPTION, METANAME_FACEBOOK_DESCRIPTION, METANAME_HTML_DESCRIPTION));
         info.setImageUrl(getContentFromMetaTag(document, METANAME_TWITTER_IMAGE, METANAME_FACEBOOK_IMAGE));
         info.setImageWidth(getContentFromMetaTag(document, METANAME_TWITTER_IMAGE_WIDTH, METANAME_FACEBOOK_IMAGE_WIDTH));
@@ -91,7 +110,24 @@ public class LinkUnfurl {
         info.setVideoWidth(getContentFromMetaTag(document, METANAME_TWITTER_VIDEO_WIDTH, METANAME_FACEBOOK_VIDEO_WIDTH));
         info.setVideoHeight(getContentFromMetaTag(document, METANAME_TWITTER_VIDEO_HEIGHT, METANAME_FACEBOOK_VIDEO_HEIGHT));
 
+        if (info.getImageUrl() != null) {
+            setImageLength(info);
+        }
+
         return info;
+    }
+
+    private static void setImageLength(LinkInfo info) {
+        try {
+            URL imageUrl = new URL(info.getImageUrl());
+            HttpURLConnection urlConnection = (HttpURLConnection) imageUrl.openConnection();
+            urlConnection.setRequestProperty("User-Agent", USER_AGENT);
+            urlConnection.setRequestMethod("HEAD");
+            long length = urlConnection.getContentLengthLong();
+            info.setImageSize(length);
+        } catch (IOException e) {
+            System.out.println("Unable to retrieve image length due to exception: "+e.getMessage());
+        }
     }
 
     private static String getContentFromMetaTag(Document document, String... tags) {
