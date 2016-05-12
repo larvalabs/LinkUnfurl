@@ -32,6 +32,7 @@ public class LinkUnfurl {
     public static final String METANAME_FACEBOOK_IMAGE_WIDTH = "og:image:width";
     public static final String METANAME_FACEBOOK_IMAGE_HEIGHT = "og:image:height";
     public static final String METANAME_FACEBOOK_VIDEO = "og:video";
+    public static final String METANAME_FACEBOOK_VIDEO_URL = "og:video:url";
     public static final String METANAME_FACEBOOK_VIDEO_WIDTH = "og:video:width";
     public static final String METANAME_FACEBOOK_VIDEO_HEIGHT = "og:video:height";
 
@@ -106,7 +107,7 @@ public class LinkUnfurl {
         info.setImageUrl(getContentFromMetaTag(document, METANAME_TWITTER_IMAGE, METANAME_FACEBOOK_IMAGE));
         info.setImageWidth(getContentFromMetaTag(document, METANAME_TWITTER_IMAGE_WIDTH, METANAME_FACEBOOK_IMAGE_WIDTH));
         info.setImageHeight(getContentFromMetaTag(document, METANAME_TWITTER_IMAGE_HEIGHT, METANAME_FACEBOOK_IMAGE_HEIGHT));
-        info.setVideoUrl(getContentFromMetaTag(document, METANAME_TWITTER_VIDEO, METANAME_FACEBOOK_VIDEO));
+        info.setVideoUrl(getContentFromMetaTag(document, METANAME_TWITTER_VIDEO, METANAME_FACEBOOK_VIDEO, METANAME_FACEBOOK_VIDEO_URL));
         info.setVideoWidth(getContentFromMetaTag(document, METANAME_TWITTER_VIDEO_WIDTH, METANAME_FACEBOOK_VIDEO_WIDTH));
         info.setVideoHeight(getContentFromMetaTag(document, METANAME_TWITTER_VIDEO_HEIGHT, METANAME_FACEBOOK_VIDEO_HEIGHT));
 

@@ -91,6 +91,7 @@ public class UnfurlTest {
         assertEquals("2014 Blitzball Wiffleball Top 10 Plays", info.getTitle());
         assertEquals("Like this for not top plays! Make sure to buy Blitzballs here▼ http://blitzball.com/ Check out Our BRAND NEW WEBSITE here▼ http://leaguelineup.com/oakleafwif...", info.getDescription());
         assertEquals("https://i.ytimg.com/vi/rJj_XssdEG0/hqdefault.jpg", info.getImageUrl());
+        assertEquals("https://www.youtube.com/embed/rJj_XssdEG0", info.getVideoUrl());
         assertEquals(1280, info.getVideoWidth().intValue());
         assertEquals(720, info.getVideoHeight().intValue());
         assertEquals(28207, info.getImageSize().longValue());
