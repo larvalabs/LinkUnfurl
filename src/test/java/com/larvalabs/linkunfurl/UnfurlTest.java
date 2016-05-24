@@ -97,4 +97,18 @@ public class UnfurlTest {
         assertEquals(28207, info.getImageSize().longValue());
 
     }
+
+    @Test
+    public void testInstagramVideo() throws Exception {
+        LinkInfo info = LinkUnfurl.unfurl("https://www.instagram.com/p/BFxgF2iQ63p/", 30000);
+        assertEquals("video", info.getType());
+    }
+
+    @Test
+    public void testDirectVideoUrl() throws Exception {
+        String url = "https://scontent-sin1-1.cdninstagram.com/t50.2886-16/13284122_132031577207112_1351661032_n.mp4";
+        LinkInfo info = LinkUnfurl.unfurl(url, 30000);
+        assertEquals("video", info.getType());
+        assertEquals(url, info.getVideoUrl());
+    }
 }

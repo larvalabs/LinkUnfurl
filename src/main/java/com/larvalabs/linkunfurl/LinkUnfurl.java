@@ -14,6 +14,9 @@ import java.net.URL;
  */
 public class LinkUnfurl {
 
+    public static final String TYPE_IMAGE = "image";
+    public static final String TYPE_VIDEO = "video";
+
     public static final String METANAME_TWITTER_SITE = "twitter:domain";
     public static final String METANAME_TWITTER_TITLE = "twitter:title";
     public static final String METANAME_TWITTER_DESCRIPTION = "twitter:description";
@@ -62,11 +65,18 @@ public class LinkUnfurl {
                 .execute();
 
         String contentType = response.contentType();
-        if (contentType != null && contentType.toLowerCase().contains("image")) {
+        if (contentType != null && contentType.toLowerCase().contains(TYPE_IMAGE)) {
             // Don't attempt to parse, this is an image file - set as hero image
             LinkInfo info = new LinkInfo();
-            info.setType("image");
+            info.setType(TYPE_IMAGE);
             info.setImageUrl(url);
+            setImageLength(info);
+            return info;
+        } else if (contentType != null && contentType.toLowerCase().contains(TYPE_VIDEO)) {
+            // Don't attempt to parse, this is a direct video file link
+            LinkInfo info = new LinkInfo();
+            info.setType(TYPE_VIDEO);
+            info.setVideoUrl(url);
             setImageLength(info);
             return info;
         }
