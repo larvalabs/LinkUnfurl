@@ -106,7 +106,7 @@ public class UnfurlTest {
 
     @Test
     public void testDirectVideoUrl() throws Exception {
-        String url = "https://scontent-sin1-1.cdninstagram.com/t50.2886-16/13284122_132031577207112_1351661032_n.mp4";
+        String url = "http://www.html5videoplayer.net/videos/toystory.mp4";
         LinkInfo info = LinkUnfurl.unfurl(url, 30000);
         assertEquals("video", info.getType());
         assertEquals(url, info.getVideoUrl());
