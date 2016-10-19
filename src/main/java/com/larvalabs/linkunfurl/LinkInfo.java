@@ -6,6 +6,8 @@ package com.larvalabs.linkunfurl;
 public class LinkInfo {
 
     private String url;
+    private boolean redirected = false;
+    private String canonicalUrl;
     private String type;
     private String site;
     private String title;
@@ -19,12 +21,37 @@ public class LinkInfo {
     private Integer videoWidth;
     private Integer videoHeight;
 
+    /**
+     * This is the URL that the content was ultimately loaded from. If isRedirected() is true then some number
+     * of redirects were necessary to get here.
+     * @return
+     */
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public boolean isRedirected() {
+        return redirected;
+    }
+
+    public void setRedirected(boolean redirected) {
+        this.redirected = redirected;
+    }
+
+    /**
+     * This is the canonical URL reported by the site, usually by way of a <link rel='canonical'/> tag.
+     * @return
+     */
+    public String getCanonicalUrl() {
+        return canonicalUrl;
+    }
+
+    public void setCanonicalUrl(String canonicalUrl) {
+        this.canonicalUrl = canonicalUrl;
     }
 
     public String getType() {

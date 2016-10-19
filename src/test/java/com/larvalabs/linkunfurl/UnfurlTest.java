@@ -105,6 +105,18 @@ public class UnfurlTest {
     }
 
     @Test
+    public void testShortenedLinkRedirect() throws Exception {
+        LinkInfo info = LinkUnfurl.unfurl("https://t.co/vnEZZzmsGF", 30000);
+        assertEquals("http://us.battle.net/sc2/en/blog/20325209/blizzcon-in-game-goodies-dva-announcer-and-portrait-10-17-2016", info.getUrl());
+    }
+
+    @Test
+    public void testCanonicalUrl() throws Exception {
+        LinkInfo info = LinkUnfurl.unfurl("http://www.ibtimes.co.uk/zetta-spanish-phone-brand-under-fire-allegedly-passing-off-rebranded-xiaomi-phones-their-own-1586988", 30000);
+        assertEquals("http://www.ibtimes.co.uk/zetta-spanish-phone-brand-under-fire-allegedly-passing-off-rebranded-xiaomi-phones-their-own-1586988", info.getCanonicalUrl());
+    }
+
+    @Test
     public void testDirectVideoUrl() throws Exception {
         String url = "http://www.html5videoplayer.net/videos/toystory.mp4";
         LinkInfo info = LinkUnfurl.unfurl(url, 30000);

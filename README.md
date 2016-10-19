@@ -8,3 +8,7 @@ Currently this library retrieves the basic information for a link like title, de
 
 * Twitter Cards: https://dev.twitter.com/cards/markup - Photo specific: https://dev.twitter.com/cards/types/photo
 * Facebook OpenGraph: http://ogp.me/
+
+# Build instructions
+
+Just run ```gradle jar```

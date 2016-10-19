@@ -2,6 +2,7 @@ package com.larvalabs.linkunfurl;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -64,19 +65,24 @@ public class LinkUnfurl {
                 .followRedirects(true)
                 .execute();
 
+        String finalUrl = response.url().toString();
+        boolean didRedirect = !finalUrl.equals(url);
+
         String contentType = response.contentType();
         if (contentType != null && contentType.toLowerCase().contains(TYPE_IMAGE)) {
             // Don't attempt to parse, this is an image file - set as hero image
             LinkInfo info = new LinkInfo();
             info.setType(TYPE_IMAGE);
-            info.setImageUrl(url);
+            info.setImageUrl(finalUrl);
+            info.setRedirected(didRedirect);
             setImageLength(info);
             return info;
         } else if (contentType != null && contentType.toLowerCase().contains(TYPE_VIDEO)) {
             // Don't attempt to parse, this is a direct video file link
             LinkInfo info = new LinkInfo();
             info.setType(TYPE_VIDEO);
-            info.setVideoUrl(url);
+            info.setVideoUrl(finalUrl);
+            info.setRedirected(didRedirect);
             setImageLength(info);
             return info;
         }
@@ -84,7 +90,15 @@ public class LinkUnfurl {
         Document document = response.parse();
 
         LinkInfo info = new LinkInfo();
-        info.setUrl(url);
+        info.setUrl(finalUrl);
+        info.setRedirected(didRedirect);
+
+        {
+            Elements elements = document.select("link[rel='canonical']");
+            if (elements.size() > 0) {
+                info.setCanonicalUrl(elements.get(0).attr("href"));
+            }
+        }
 
         {
             String twitterTitle = getMetaElementIfExists(document, METANAME_TWITTER_TITLE);
