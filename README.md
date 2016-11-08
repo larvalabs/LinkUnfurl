@@ -4,6 +4,36 @@ This library produces information that can be used to "unfurl" links in a way si
 
 Currently this library retrieves the basic information for a link like title, description, main image and a video if present. It does not retrieve optional labels and values as described in the article.
 
+For example:
+
+```
+LinkInfo info = LinkUnfurl.unfurl("http://www.harvard.edu", 10000);
+info.getTitle();
+info.getDescription();
+info.getImageUrl();
+```
+
+# Installing via dependency
+
+Add https://jitpack.io to your repositories:
+
+```
+allprojects {
+    repositories {
+        ...
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+Then add linkunfurl as a compile dependency:
+
+```
+dependencies {
+    compile 'com.github.larvalabs:linkunfurl:v0.11'
+}
+```
+
 # Tag documentation
 
 * Twitter Cards: https://dev.twitter.com/cards/markup - Photo specific: https://dev.twitter.com/cards/types/photo
